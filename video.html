@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فيديو تقديمي - الدراسة في السعودية</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0a0a0a;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s ease;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide-1 {
+            background: linear-gradient(135deg, #006C35 0%, #00A651 100%);
+        }
+
+        .slide-2 {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .slide-3 {
+            background: linear-gradient(135deg, #C9A227 0%, #E8C547 100%);
+        }
+
+        .slide-4 {
+            background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+        }
+
+        .slide-5 {
+            background: linear-gradient(135deg, #006C35 0%, #00A651 100%);
+        }
+
+        .slide-icon {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .slide-title {
+            font-family: 'The Year of The Camel', 'Tajawal', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .slide-stats {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .slide-stat {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .slide-stat-number {
+            font-family: 'The Year of The Camel', 'Tajawal', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+        }
+
+        .slide-stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .slide-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 600px;
+        }
+
+        .slide-feature {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slide-feature-icon {
+            font-size: 2rem;
+        }
+
+        .slide-feature-text {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .slide-cta {
+            background: white;
+            color: #006C35;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-family: 'The Year of The Camel', 'Tajawal', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slide-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #006C35;
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 20px;
+            border-radius: 20px;
+            z-index: 100;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .slide-stats {
+                gap: 20px;
+            }
+
+            .slide-stat {
+                padding: 15px 25px;
+            }
+
+            .slide-stat-number {
+                font-size: 1.8rem;
+            }
+
+            .slide-features {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-icon {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide slide-1 active" id="slide-1">
+            <div class="slide-icon">🎓</div>
+            <h1 class="slide-title">الدراسة في السعودية</h1>
+            <p class="slide-subtitle">بوابتك للوصول إلى أفضل الفرص التعليمية في المملكة العربية السعودية</p>
+            <div class="slide-stats">
+                <div class="slide-stat">
+                    <span class="slide-stat-number">50+</span>
+                    <span class="slide-stat-label">جامعة معتمدة</span>
+                </div>
+                <div class="slide-stat">
+                    <span class="slide-stat-number">200+</span>
+                    <span class="slide-stat-label">تخصص أكاديمي</span>
+                </div>
+                <div class="slide-stat">
+                    <span class="slide-stat-number">10K+</span>
+                    <span class="slide-stat-label">منحة دراسية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Universities -->
+        <div class="slide slide-2" id="slide-2">
+            <div class="slide-icon">🏛️</div>
+            <h1 class="slide-title">جامعات مرموقة</h1>
+            <p class="slide-subtitle">أفضل الجامعات السعودية المعترف بها عالمياً</p>
+            <div class="slide-features">
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">👑</span>
+                    <span class="slide-feature-text">جامعة الملك سعود</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">🕌</span>
+                    <span class="slide-feature-text">جامعة الملك عبدالعزيز</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">⚡</span>
+                    <span class="slide-feature-text">جامعة الملك فهد للبترول والمعادن</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">🔬</span>
+                    <span class="slide-feature-text">جامعة الملك عبدالله للعلوم والتقنية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Scholarships -->
+        <div class="slide slide-3" id="slide-3">
+            <div class="slide-icon">🎓</div>
+            <h1 class="slide-title">منح دراسية ممولة</h1>
+            <p class="slide-subtitle">فرص تمويل كاملة للطلاب الدوليين المتفوقين</p>
+            <div class="slide-features">
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">✅</span>
+                    <span class="slide-feature-text">إعفاء كامل من الرسوم</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">💰</span>
+                    <span class="slide-feature-text">بدل شهري 1,000 ريال</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">🏠</span>
+                    <span class="slide-feature-text">سكن جامعي مجاني</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">✈️</span>
+                    <span class="slide-feature-text">تذكرة سفر سنوية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Programs -->
+        <div class="slide slide-4" id="slide-4">
+            <div class="slide-icon">📚</div>
+            <h1 class="slide-title">تخصصات متنوعة</h1>
+            <p class="slide-subtitle">أكثر من 200 تخصص أكاديمي في مختلف المجالات</p>
+            <div class="slide-features">
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">💻</span>
+                    <span class="slide-feature-text">علوم الحاسب وتقنية المعلومات</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">⚙️</span>
+                    <span class="slide-feature-text">الهندسة</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">🏥</span>
+                    <span class="slide-feature-text">الطب والعلوم الصحية</span>
+                </div>
+                <div class="slide-feature">
+                    <span class="slide-feature-icon">📊</span>
+                    <span class="slide-feature-text">إدارة الأعمال</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: CTA -->
+        <div class="slide slide-5" id="slide-5">
+            <div class="slide-icon">🚀</div>
+            <h1 class="slide-title">ابدأ رحلتك الآن</h1>
+            <p class="slide-subtitle">قدّم طلبك اليوم واحصل على قبول في أفضل الجامعات السعودية</p>
+            <a href="index.html#apply" class="slide-cta">قدّم الآن</a>
+        </div>
+
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="slide-counter" id="slideCounter">1 / 5</div>
+        <div class="controls">
+            <button class="control-btn" id="prevBtn">❮</button>
+            <button class="control-btn" id="nextBtn">❯</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        const slideDuration = 4000; // 4 seconds per slide
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            progressBar.style.width = ((index + 1) / totalSlides * 100) + '%';
+            slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, slideDuration);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+
+        nextBtn.addEventListener('click', () => {
+            stopSlideshow();
+            nextSlide();
+            startSlideshow();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopSlideshow();
+            prevSlide();
+            startSlideshow();
+        });
+
+        // Auto-start slideshow
+        startSlideshow();
+
+        // Pause on hover
+        document.querySelector('.video-container').addEventListener('mouseenter', stopSlideshow);
+        document.querySelector('.video-container').addEventListener('mouseleave', startSlideshow);
+    </script>
+</body>
+</html>
