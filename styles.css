@@ -1,3 +1,20 @@
+/* Font Face - The Year of the Camel */
+@font-face {
+    font-family: 'The Year of The Camel';
+    src: url('fonts/TheYearofTheCamel-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'The Year of The Camel';
+    src: url('fonts/TheYearofTheCamel-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Reset & Base Styles */
 * {
     margin: 0;
@@ -38,7 +55,7 @@ html {
 }
 
 body {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'The Year of The Camel', 'Tajawal', sans-serif;
     line-height: 1.8;
     color: var(--dark);
     background: var(--white);
